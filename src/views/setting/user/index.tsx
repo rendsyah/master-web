@@ -3,6 +3,9 @@
 import type React from 'react';
 import UserHeader from './components/UserHeader';
 import UserTable from './components/UserTable';
+import dynamic from 'next/dynamic';
+
+const ModalAddUser = dynamic(() => import('./components/ModalAddUser'), { ssr: false });
 
 const UserView: React.FC = () => {
   return (
@@ -13,6 +16,7 @@ const UserView: React.FC = () => {
       <div className="col-span-12">
         <UserTable />
       </div>
+      <ModalAddUser />
     </div>
   );
 };

@@ -26,7 +26,7 @@
 }
 
 @utility input {
-  @apply w-full appearance-none rounded-lg border border-secondary/[16%] py-2.75 px-4 text-sm text-white/90 placeholder:text-white/45 focus:outline-hidden focus:border-primary;
+  @apply w-full appearance-none rounded-lg bg-ui-900 border border-secondary/[16%] py-2.75 px-4 text-sm text-white/90 placeholder:text-gray-400 focus:outline-hidden focus:border-primary;
 }
 
 @utility input-label {
@@ -42,7 +42,7 @@
 }
 
 @utility input-error-text {
-  @apply text-red-500 text-xs;
+  @apply text-red-600 text-xs;
 }
 
 @utility widget-dark {

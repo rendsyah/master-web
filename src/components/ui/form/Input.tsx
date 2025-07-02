@@ -12,7 +12,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 const Input: React.FC<InputProps> = ({
   id,
   label,
-  className = '',
+  className,
   error,
   required,
   inputMode,
@@ -74,7 +74,7 @@ const Input: React.FC<InputProps> = ({
           {icon && (
             <span
               className={cn(
-                'absolute top-1/2 -translate-y-1/2',
+                'absolute top-1/2 -translate-y-1/2 text-gray-400',
                 iconPosition === 'left' ? 'left-4' : 'right-4',
               )}
             >

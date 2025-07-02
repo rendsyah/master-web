@@ -16,16 +16,14 @@ const DropdownItem: React.FC<DropdownItemProps> = ({
   href,
   onClick,
   onItemClick,
-  baseClassName = 'block w-full text-left px-3 py-2.5 text-sm rounded-lg hover:text-white/90',
-  className = '',
+  baseClassName = 'block w-full text-left px-3 py-2.5 text-sm rounded-lg hover:text-primary',
+  className,
   children,
 }) => {
   const combinedClasses = `${baseClassName} ${className}`.trim();
 
   const handleClick = (event: React.MouseEvent) => {
-    if (tag === 'button') {
-      event.preventDefault();
-    }
+    if (tag === 'button') event.preventDefault();
     if (onClick) onClick();
     if (onItemClick) onItemClick();
   };

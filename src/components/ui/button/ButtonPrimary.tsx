@@ -7,7 +7,7 @@ import LoadingIcon from '@/components/icons/Loading';
 const ButtonPrimary: React.FC<ButtonProps> = ({
   children,
   type,
-  className = '',
+  className,
   fullWidth = true,
   isLoading = false,
   icon,

@@ -10,7 +10,11 @@ import Bars3CenterLeftIcon from '../icons/Bars3CenterLeft';
 import XMarkIcon from '../icons/XMark';
 import BellIcon from '../icons/Bell';
 
-const AppHeader: React.FC<{ user: User }> = ({ user }) => {
+type AppHeaderProps = {
+  user: User;
+};
+
+const AppHeader: React.FC<AppHeaderProps> = ({ user }) => {
   const { isMobileOpen, isExpanded, toggleSidebar, toggleMobileSidebar } = useSidebar();
 
   const [isUserOpen, setIsUserOpen] = useState(false);
@@ -28,7 +32,7 @@ const AppHeader: React.FC<{ user: User }> = ({ user }) => {
   };
 
   return (
-    <header className="sticky top-0 w-full border-b border-secondary/[4%] bg-ui-900 z-50">
+    <header className="sticky top-0 w-full border-b border-secondary/[6%] bg-ui-900 z-50">
       <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
         {/* LEFT SIDE */}
         <div className="flex items-center justify-between w-full lg:justify-normal gap-2 sm:gap-4 px-5 lg:px-0 py-5 lg:py-4">

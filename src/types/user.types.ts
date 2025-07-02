@@ -1,3 +1,12 @@
+export type UserForm = {
+  access_id: number;
+  username: string;
+  password: string;
+  fullname: string;
+  email: string;
+  phone: string;
+};
+
 export type UserList = {
   id: number;
   fullname: string;

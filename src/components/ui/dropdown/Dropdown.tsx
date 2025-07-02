@@ -1,14 +1,15 @@
 import type React from 'react';
 import { useEffect, useRef } from 'react';
+import { cn } from '@/libs/utils/cn.utils';
 
-type Dropdown = {
+type DropdownProps = {
   isOpen: boolean;
   children: React.ReactNode;
   className?: string;
   onClose: () => void;
 };
 
-const Dropdown: React.FC<Dropdown> = ({ isOpen, onClose, children, className = '' }) => {
+const Dropdown: React.FC<DropdownProps> = ({ isOpen, onClose, children, className }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,7 +34,7 @@ const Dropdown: React.FC<Dropdown> = ({ isOpen, onClose, children, className = '
   return (
     <div
       ref={dropdownRef}
-      className={`absolute z-40 -right-5 lg:-right-6 rounded-bl-lg bg-ui-900 ${className}`}
+      className={cn('absolute z-40 -right-5 lg:-right-6 rounded-bl-lg bg-ui-900', className)}
     >
       {children}
     </div>

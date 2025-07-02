@@ -1,6 +1,7 @@
 import type React from 'react';
 import type { Meta } from '@/types/commons.types';
 import { useMemo } from 'react';
+import { useSidebar } from '@/contexts/sidebar.context';
 import { cn } from '@/libs/utils/cn.utils';
 import ChevronRightIcon from '@/components/icons/ChevronRight';
 import ChevronLeftIcon from '@/components/icons/ChevronLeft';
@@ -8,11 +9,15 @@ import EllipsisHorizontalIcon from '@/components/icons/EllipsisHorizontal';
 
 type PaginationProps = {
   meta: Meta;
+  context: string;
   onPageChange: (page: number) => void;
 };
 
-const Pagination: React.FC<PaginationProps> = ({ meta, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({ meta, context, onPageChange }) => {
   const { page, limit, totalData, totalPage } = meta;
+  const { isMobile } = useSidebar();
+
+  const maxVisible = isMobile ? 2 : 4;
 
   const start = useMemo(() => {
     if (totalData === 0) return 0;
@@ -24,45 +29,39 @@ const Pagination: React.FC<PaginationProps> = ({ meta, onPageChange }) => {
     return Math.min(page * limit, totalData);
   }, [page, limit, totalData]);
 
-  const generatePages = () => {
-    const pages = [];
-    const maxVisible = 4;
+  const pages = useMemo(() => {
+    const renderPages: (number | React.JSX.Element)[] = [];
+
     const half = Math.floor(maxVisible / 2);
-
     let startPage = Math.max(1, page - half);
-    let endPage = Math.min(totalPage, page + half);
+    let endPage = startPage + maxVisible - 1;
 
-    if (endPage - startPage + 1 < maxVisible) {
-      if (startPage === 1) {
-        endPage = Math.min(startPage + maxVisible - 1, totalPage);
-      } else if (endPage === totalPage) {
-        startPage = Math.max(1, totalPage - maxVisible + 1);
-      }
+    if (endPage > totalPage) {
+      endPage = totalPage;
+      startPage = Math.max(1, totalPage - maxVisible + 1);
     }
 
     if (startPage > 1) {
-      pages.push(1);
-      if (startPage > 2) pages.push(<EllipsisHorizontalIcon className="w-5 h-5" />);
+      renderPages.push(1);
+      if (startPage > 2) renderPages.push(<EllipsisHorizontalIcon className="w-5 h-5" />);
     }
 
     for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
+      renderPages.push(i);
     }
 
     if (endPage < totalPage) {
-      if (endPage < totalPage - 1) pages.push(<EllipsisHorizontalIcon className="w-5 h-5" />);
-      pages.push(totalPage);
+      if (endPage < totalPage - 1) renderPages.push(<EllipsisHorizontalIcon className="w-5 h-5" />);
+      renderPages.push(totalPage);
     }
 
-    return pages;
-  };
-
-  const pages = generatePages();
+    return renderPages;
+  }, [page, totalPage, maxVisible]);
 
   return (
     <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-4">
-      <span className="text-xs md:text-sm">
-        Showing {start} to {end} of {totalData} results
+      <span className="text-sm">
+        Showing {start} to {end} of {totalData} {context}
       </span>
       {totalData > 0 && (
         <div className="flex items-center gap-2">

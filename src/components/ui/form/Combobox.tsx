@@ -30,7 +30,7 @@ const Combobox: React.FC<ComboboxProps> = ({
   label,
   placeholder = 'Choose Option',
   options,
-  className = '',
+  className,
   value,
   error,
   required,
@@ -68,45 +68,52 @@ const Combobox: React.FC<ComboboxProps> = ({
         onClose={() => setQuery('')}
         disabled={disabled}
       >
-        <div className="relative">
-          <ComboboxInput
-            id={id}
-            className={cn(
-              'w-full input',
-              error && 'input-error',
-              disabled && 'input-disabled',
-              className,
-            )}
-            aria-invalid={!!error}
-            aria-describedby={error ? `${id}-error` : undefined}
-            displayValue={(opt: Options) => opt?.name || ''}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder={placeholder}
-          />
-          <ComboboxButton className="group absolute inset-y-0 right-0 px-4">
-            <ChevronDownIcon className="w-5 h-5 text-gray-400" />
-          </ComboboxButton>
-        </div>
+        {({ open }) => (
+          <div className="relative">
+            <ComboboxInput
+              id={id}
+              className={cn(
+                'w-full input',
+                error && 'input-error',
+                disabled && 'input-disabled',
+                className,
+              )}
+              aria-invalid={!!error}
+              aria-describedby={error ? `${id}-error` : undefined}
+              displayValue={(opt: Options) => opt?.name || ''}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder={placeholder}
+            />
+            <ComboboxButton className="group absolute inset-y-0 right-0 px-4">
+              <ChevronDownIcon
+                className={cn(
+                  'w-5 h-5 text-gray-400 transition-transform duration-200',
+                  open && 'rotate-180',
+                )}
+              />
+            </ComboboxButton>
 
-        <ComboboxOptions
-          anchor="bottom"
-          transition
-          className={cn(
-            'w-(--input-width) rounded-lg border border-white/10 bg-gray-900 p-1 [--anchor-gap:--spacing(1)] empty:invisible',
-            'transition duration-100 ease-in data-leave:data-closed:opacity-0',
-          )}
-        >
-          {filterOptions.map((opt) => (
-            <ComboboxOption
-              key={opt.id}
-              value={opt}
-              className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none data-focus:bg-white/5"
+            <ComboboxOptions
+              anchor="bottom"
+              transition
+              className={cn(
+                'w-(--input-width) rounded-lg border border-secondary/[16%] bg-ui-900 p-1 [--anchor-gap:--spacing(1)] empty:invisible',
+                'transition duration-100 ease-in data-leave:data-closed:opacity-0',
+              )}
             >
-              <CheckIcon className="invisible w-4 h-4 text-white/90 group-data-selected:visible" />
-              <div className="text-sm">{opt.name}</div>
-            </ComboboxOption>
-          ))}
-        </ComboboxOptions>
+              {filterOptions.map((opt) => (
+                <ComboboxOption
+                  key={opt.id}
+                  value={opt}
+                  className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none data-focus:bg-ui-800"
+                >
+                  <CheckIcon className="invisible w-4 h-4 text-white/90 group-data-selected:visible" />
+                  <div className="text-sm">{opt.name}</div>
+                </ComboboxOption>
+              ))}
+            </ComboboxOptions>
+          </div>
+        )}
       </HeadlessCombobox>
 
       {/* ERROR */}

@@ -22,6 +22,7 @@ type TableBodyProps = {
   children: React.ReactNode;
   className?: string;
 };
+
 type TableCellProps = {
   children: React.ReactNode;
   isHeader?: boolean;

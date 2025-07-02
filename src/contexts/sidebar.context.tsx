@@ -2,10 +2,12 @@
 
 import type React from 'react';
 import type { Nullable } from '@/types/commons.types';
-import { createContext, useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { createSafeContext } from '@/libs/utils/createSafeContext';
 
 type SidebarContextProps = Nullable<{
   isExpanded: boolean;
+  isMobile: boolean;
   isMobileOpen: boolean;
   activeItem: string | null;
   openSubmenu: string | null;
@@ -15,9 +17,9 @@ type SidebarContextProps = Nullable<{
   toggleSubmenu: (item: string) => void;
 }>;
 
-const SidebarContext = createContext<SidebarContextProps>(undefined);
+const [SidebarContext, useSidebar] = createSafeContext<SidebarContextProps>('Sidebar');
 
-export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -57,6 +59,7 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
     <SidebarContext.Provider
       value={{
         isExpanded: isMobile ? false : isExpanded,
+        isMobile,
         isMobileOpen,
         activeItem,
         openSubmenu,
@@ -71,10 +74,4 @@ export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ child
   );
 };
 
-export const useSidebar = () => {
-  const context = useContext(SidebarContext);
-  if (!context) {
-    throw new Error('useSidebar must be used within a SidebarProvider');
-  }
-  return context;
-};
+export { useSidebar, SidebarProvider };

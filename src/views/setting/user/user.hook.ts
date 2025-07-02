@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { usePaginatedFetch } from '@/hooks/usePaginateFetch';
 import { Routes } from '@/libs/constants/routes.const';
-import { UserList } from '@/types/user.types';
+import type { UserList } from '@/types/user.types';
 
 const useUser = () => {
   const [filters, setFilters] = useState({

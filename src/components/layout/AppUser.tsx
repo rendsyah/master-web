@@ -11,7 +11,11 @@ import DropdownItem from '../ui/dropdown/DropdownItem';
 import SettingIcon from '../icons/Setting';
 import PowerIcon from '../icons/Power';
 
-const AppUser: React.FC<{ user: User }> = ({ user }) => {
+type AppUserProps = {
+  user: User;
+};
+
+const AppUser: React.FC<AppUserProps> = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
@@ -36,7 +40,6 @@ const AppUser: React.FC<{ user: User }> = ({ user }) => {
         <span className="mr-4 rounded-full">
           <Avatar src={user.image || ManImage} alt="Avatar" status="online" />
         </span>
-
         <div className="text-left">
           <span className="block text-sm">{user.fullname}</span>
           <span className="block text-xs text-gray-400">{user.access_name}</span>
@@ -47,7 +50,7 @@ const AppUser: React.FC<{ user: User }> = ({ user }) => {
       <Dropdown
         isOpen={isOpen}
         onClose={closeDropdown}
-        className="mt-[16px] flex flex-col w-[260px] p-3"
+        className="mt-[17px] flex flex-col w-[260px] p-3"
       >
         <div>
           <span className="block text-md">{user.fullname}</span>
@@ -68,7 +71,7 @@ const AppUser: React.FC<{ user: User }> = ({ user }) => {
           </li>
         </ul>
         <div
-          className="flex items-center gap-3 px-3 py-2.5 mt-3 rounded-lg group text-sm text-gray-400 hover:text-white/90 cursor-pointer"
+          className="flex items-center gap-3 px-3 py-2.5 mt-3 rounded-lg group text-sm text-gray-400 hover:text-primary cursor-pointer"
           onClick={handleLogout}
         >
           <PowerIcon className="w-5 h-5" />

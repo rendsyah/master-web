@@ -10,7 +10,7 @@ type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
 const Textarea: React.FC<TextareaProps> = ({
   id,
   label,
-  className = '',
+  className,
   error,
   required,
   disabled,

@@ -2,8 +2,9 @@
 
 import type React from 'react';
 import type { Device, Nullable } from '@/types/commons.types';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UAParser } from 'ua-parser-js';
+import { createSafeContext } from '@/libs/utils/createSafeContext';
 import Notification from '@/components/ui/notification/Notification';
 
 type FeedbackModal = {
@@ -14,18 +15,22 @@ type FeedbackModal = {
 };
 
 type GlobalContextProps = Nullable<{
+  modal: boolean;
   feedbackModal: FeedbackModal;
   device: Device;
+  handleModal: () => void;
   openFeedbackModal: (data: Omit<FeedbackModal, 'open'>) => void;
   closeFeedbackModal: () => void;
   copyClipboard: (data: string) => void;
 }>;
 
-const GlobalContext = createContext<GlobalContextProps>(undefined);
+const [GlobalContext, useGlobal] = createSafeContext<GlobalContextProps>('Global');
 
-export const GlobalProvider: React.FC<{
+const GlobalProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
+  const [modal, setModal] = useState<boolean>(false);
+
   const [feedbackModal, setFeedbackModal] = useState<FeedbackModal>({
     open: false,
     type: 'success',
@@ -44,6 +49,10 @@ export const GlobalProvider: React.FC<{
     userAgent: '',
   });
 
+  const handleModal = () => {
+    setModal((prev) => !prev);
+  };
+
   const openFeedbackModal = (data: Omit<FeedbackModal, 'open'>) => {
     setFeedbackModal({ ...data, open: true });
   };
@@ -54,7 +63,9 @@ export const GlobalProvider: React.FC<{
 
   const copyClipboard = (data: string) => {
     navigator.clipboard.writeText(data);
-    Notification('Copied to clipboard');
+    Notification({
+      message: 'Copied to clipboard',
+    });
   };
 
   useEffect(() => {
@@ -76,8 +87,10 @@ export const GlobalProvider: React.FC<{
   return (
     <GlobalContext.Provider
       value={{
+        modal,
         feedbackModal,
         device,
+        handleModal,
         openFeedbackModal,
         closeFeedbackModal,
         copyClipboard,
@@ -88,10 +101,4 @@ export const GlobalProvider: React.FC<{
   );
 };
 
-export const useGlobal = () => {
-  const context = useContext(GlobalContext);
-  if (!context) {
-    throw new Error('useGlobal must be used within GlobalProvider');
-  }
-  return context;
-};
+export { useGlobal, GlobalProvider };
