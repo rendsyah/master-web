@@ -3,7 +3,7 @@ import type { UserList } from '@/types/user.types';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table/Table';
 import { useGlobal } from '@/contexts/global.context';
 import SearchIcon from '@/components/icons/Search';
-import EllipsisHorizontalIcon from '@/components/icons/EllipsisHorizontal';
+import PencilSquareIcon from '@/components/icons/PencilSquare';
 import ButtonSecondary from '@/components/ui/button/ButtonSecondary';
 import Input from '@/components/ui/form/Input';
 import Badge from '@/components/ui/badge/Badge';
@@ -158,7 +158,7 @@ const UserTable: React.FC<UserTableProps> = ({ appliedFilter }) => {
                 </TableCell>
                 <TableCell className="text-center">
                   <div className="flex justify-center cursor-pointer">
-                    <EllipsisHorizontalIcon className="w-5 h-5 text-primary" />
+                    <PencilSquareIcon className="w-5 h-5 text-primary" />
                   </div>
                 </TableCell>
               </TableRow>
