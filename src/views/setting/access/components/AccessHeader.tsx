@@ -1,9 +1,12 @@
 import type React from 'react';
+import { useGlobal } from '@/contexts/global.context';
 import { usePermission } from '@/contexts/permission.context';
 import Breadcrumbs from '@/components/ui/breadcrumbs/Breadcrumbs';
 import ButtonPrimary from '@/components/ui/button/ButtonPrimary';
+import PlusIcon from '@/components/icons/Plus';
 
 const AccessHeader: React.FC = () => {
+  const { onOpenModal } = useGlobal();
   const { hasPermission } = usePermission();
 
   return (
@@ -20,7 +23,9 @@ const AccessHeader: React.FC = () => {
 
       {hasPermission('create') && (
         <div>
-          <ButtonPrimary className="hidden sm:block">Add New Access</ButtonPrimary>
+          <ButtonPrimary icon={<PlusIcon className="w-5 h-5" />} onClick={() => onOpenModal('add')}>
+            Add New Access
+          </ButtonPrimary>
         </div>
       )}
     </div>
