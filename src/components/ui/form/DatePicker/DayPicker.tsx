@@ -68,7 +68,7 @@ const DayPicker: React.FC<DayPickerProps> = ({
               disabled={disabled}
               className={cn(
                 'w-8 h-8 rounded-full flex items-center justify-center text-white/90 transition-colors',
-                !selected && today && !disabled && 'border border-primary',
+                !selected && today && !disabled && 'border ring-primary border-primary',
                 !selected && !disabled && 'hover:bg-ui-800',
                 selected && 'bg-primary',
                 disabled && 'opacity-30 cursor-not-allowed',
