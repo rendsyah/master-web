@@ -21,7 +21,7 @@ const ButtonSecondary: React.FC<ButtonProps> = ({
     <HeadlessButton
       type={type}
       disabled={isDisabled}
-      className={`flex items-center justify-center gap-2 text-sm font-semibold py-2.75 px-4 rounded-lg ${baseClasses}`}
+      className={`flex items-center justify-center gap-2 text-sm font-semibold py-2.75 px-3.75 rounded-lg ${baseClasses}`}
       {...restProps}
     >
       {isLoading ? (
