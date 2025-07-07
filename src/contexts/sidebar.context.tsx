@@ -2,7 +2,7 @@
 
 import type React from 'react';
 import type { Nullable } from '@/types/commons.types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createSafeContext } from '@/libs/utils/createSafeContext';
 
 type SidebarContextProps = Nullable<{
@@ -11,10 +11,10 @@ type SidebarContextProps = Nullable<{
   isMobileOpen: boolean;
   activeItem: string | null;
   openSubmenu: string | null;
-  toggleSidebar: () => void;
-  toggleMobileSidebar: () => void;
+  onToggleSidebar: () => void;
+  onToggleMobileSidebar: () => void;
+  onToggleSubmenu: (item: string) => void;
   setActiveItem: (item: string | null) => void;
-  toggleSubmenu: (item: string) => void;
 }>;
 
 const [SidebarContext, useSidebar] = createSafeContext<SidebarContextProps>('Sidebar');
@@ -43,17 +43,17 @@ const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
     };
   }, []);
 
-  const toggleSidebar = () => {
+  const onToggleSidebar = useCallback(() => {
     setIsExpanded((prev) => !prev);
-  };
+  }, []);
 
-  const toggleMobileSidebar = () => {
+  const onToggleMobileSidebar = useCallback(() => {
     setIsMobileOpen((prev) => !prev);
-  };
+  }, []);
 
-  const toggleSubmenu = (item: string) => {
+  const onToggleSubmenu = useCallback((item: string) => {
     setOpenSubmenu((prev) => (prev === item ? null : item));
-  };
+  }, []);
 
   return (
     <SidebarContext.Provider
@@ -63,10 +63,10 @@ const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
         isMobileOpen,
         activeItem,
         openSubmenu,
-        toggleSidebar,
-        toggleMobileSidebar,
+        onToggleSidebar,
+        onToggleMobileSidebar,
+        onToggleSubmenu,
         setActiveItem,
-        toggleSubmenu,
       }}
     >
       {children}

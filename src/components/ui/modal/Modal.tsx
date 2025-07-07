@@ -1,29 +1,30 @@
 import type React from 'react';
-import { useGlobal } from '@/contexts/global.context';
+import { ModalKey, useGlobal } from '@/contexts/global.context';
+import { useLockBody } from '@/hooks/useLockBody';
 import XMarkIcon from '@/components/icons/XMark';
 import InfoCircleIcon from '@/components/icons/InfoCircle';
-import { useLockBody } from '@/hooks/useLockBody';
 
 type ModalProps = {
+  name: ModalKey;
   title: string;
   children: React.ReactNode;
-  onClose?: () => void;
   action?: React.ReactNode;
+  onClose?: () => void;
 };
 
-const Modal: React.FC<ModalProps> = ({ title, children, action, onClose }) => {
-  const { modal, handleModal } = useGlobal();
+const Modal: React.FC<ModalProps> = ({ name, title, children, action, onClose }) => {
+  const { modal, onCloseModal } = useGlobal();
 
-  useLockBody(!!modal);
+  useLockBody(modal === name);
 
-  if (!modal) return null;
+  if (modal !== name) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-40">
+    <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* BACKDROP */}
       <div
         className="fixed inset-0 bg-ui-900/50 backdrop-blur-sm"
-        onClick={onClose ?? handleModal}
+        onClick={onClose ?? onCloseModal}
       />
       {/* MODAL */}
       <div
@@ -34,19 +35,21 @@ const Modal: React.FC<ModalProps> = ({ title, children, action, onClose }) => {
         {/* HEADER */}
         <div className="w-full flex justify-between px-6 items-center">
           {title && (
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <InfoCircleIcon className="h-6 w-6 text-primary" />
-              <h1 className="text-md">{title}</h1>
+              <h1 className="text-md font-semibold">{title}</h1>
             </div>
           )}
-          <button onClick={onClose ?? handleModal}>
+          <button onClick={onClose ?? onCloseModal}>
             <XMarkIcon className="h-6 w-6" />
           </button>
         </div>
         {/* DIVIDER */}
         <div className="border-b border-secondary/[8%] my-4" />
         {/* BODY */}
-        <div className="px-6 overflow-y-auto custom-scrollbar max-h-[500px]">{children}</div>
+        <div className="px-6 overflow-y-auto custom-scrollbar max-h-[450px] sm:max-h-[500px]">
+          {children}
+        </div>
         {/* ACTION */}
         {action && (
           <div>

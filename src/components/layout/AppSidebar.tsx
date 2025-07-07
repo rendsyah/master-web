@@ -22,8 +22,9 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ menus }) => {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 h-screen flex flex-col bg-ui-900 lg:bg-ui-800 mt-16 lg:pt-0 lg:mt-0 px-4 z-50 lg:translate-x-0',
+        'fixed left-0 top-0 h-screen flex flex-col bg-ui-900 lg:bg-ui-800 mt-16 lg:pt-0 lg:mt-0 px-4 lg:translate-x-0',
         'transition-[width,transform] duration-300 ease-in-out',
+        'z-50',
         asideClasess,
       )}
     >
@@ -38,7 +39,6 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ menus }) => {
           )}
         </div>
       </div>
-
       {/* MENU */}
       <div className="flex flex-col overflow-y-auto no-scrollbar">
         <nav>

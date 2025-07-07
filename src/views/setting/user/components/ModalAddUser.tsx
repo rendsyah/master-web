@@ -1,13 +1,18 @@
 import type React from 'react';
+import type { Options } from '@/types/commons.types';
 import { Controller } from 'react-hook-form';
 import Modal from '@/components/ui/modal/Modal';
 import ButtonPrimary from '@/components/ui/button/ButtonPrimary';
 import ButtonSecondary from '@/components/ui/button/ButtonSecondary';
 import Input from '@/components/ui/form/Input';
 import Select from '@/components/ui/form/Select';
-import useAddUser from '../addUser.hook';
+import useAddUser from '../hooks/useAddUser.hook';
 
-const ModalAddUser: React.FC = () => {
+type ModalAddUserProps = {
+  accessOptions: Options[];
+};
+
+const ModalAddUser: React.FC<ModalAddUserProps> = ({ accessOptions }) => {
   const { form, onSubmit, onCancel } = useAddUser();
 
   const {
@@ -19,6 +24,7 @@ const ModalAddUser: React.FC = () => {
 
   return (
     <Modal
+      name="add"
       title="Add New User"
       action={
         <div className="flex gap-4">
@@ -48,10 +54,7 @@ const ModalAddUser: React.FC = () => {
                   placeholder="Choose Access"
                   value={field.value}
                   onChange={field.onChange}
-                  options={[
-                    { id: 1, name: 'Access 1' },
-                    { id: 2, name: 'Access 2' },
-                  ]}
+                  options={accessOptions}
                   error={errors.access_id?.message}
                   required
                 />
@@ -106,6 +109,7 @@ const ModalAddUser: React.FC = () => {
               type="password"
               placeholder="Enter your password"
               error={errors.password?.message}
+              autoComplete="off"
               required
               {...register('password')}
             />

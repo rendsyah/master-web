@@ -2,12 +2,14 @@
 
 import type React from 'react';
 import type { Device, Nullable } from '@/types/commons.types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { UAParser } from 'ua-parser-js';
 import { createSafeContext } from '@/libs/utils/createSafeContext';
 import Notification from '@/components/ui/notification/Notification';
 
-type FeedbackModal = {
+export type ModalKey = 'add' | 'filter' | 'detail' | null;
+
+export type FeedbackModal = {
   open: boolean;
   type: 'success' | 'error';
   message: string;
@@ -15,13 +17,14 @@ type FeedbackModal = {
 };
 
 type GlobalContextProps = Nullable<{
-  modal: boolean;
+  modal: ModalKey;
   feedbackModal: FeedbackModal;
   device: Device;
-  handleModal: () => void;
-  openFeedbackModal: (data: Omit<FeedbackModal, 'open'>) => void;
-  closeFeedbackModal: () => void;
-  copyClipboard: (data: string) => void;
+  onOpenModal: (key: ModalKey) => void;
+  onCloseModal: () => void;
+  onOpenFeedbackModal: (data: Omit<FeedbackModal, 'open'>) => void;
+  onCloseFeedbackModal: () => void;
+  onCopyClipboard: (data: string) => void;
 }>;
 
 const [GlobalContext, useGlobal] = createSafeContext<GlobalContextProps>('Global');
@@ -29,7 +32,7 @@ const [GlobalContext, useGlobal] = createSafeContext<GlobalContextProps>('Global
 const GlobalProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [modal, setModal] = useState<boolean>(false);
+  const [modal, setModal] = useState<ModalKey>(null);
 
   const [feedbackModal, setFeedbackModal] = useState<FeedbackModal>({
     open: false,
@@ -49,24 +52,28 @@ const GlobalProvider: React.FC<{
     userAgent: '',
   });
 
-  const handleModal = () => {
-    setModal((prev) => !prev);
-  };
+  const onOpenModal = useCallback((key: ModalKey) => {
+    setModal(key);
+  }, []);
 
-  const openFeedbackModal = (data: Omit<FeedbackModal, 'open'>) => {
+  const onCloseModal = useCallback(() => {
+    setModal(null);
+  }, []);
+
+  const onOpenFeedbackModal = useCallback((data: Omit<FeedbackModal, 'open'>) => {
     setFeedbackModal({ ...data, open: true });
-  };
+  }, []);
 
-  const closeFeedbackModal = () => {
+  const onCloseFeedbackModal = useCallback(() => {
     setFeedbackModal((prev) => ({ ...prev, open: false }));
-  };
+  }, []);
 
-  const copyClipboard = (data: string) => {
+  const onCopyClipboard = useCallback((data: string) => {
     navigator.clipboard.writeText(data);
     Notification({
       message: 'Copied to clipboard',
     });
-  };
+  }, []);
 
   useEffect(() => {
     const parser = new UAParser();
@@ -90,10 +97,11 @@ const GlobalProvider: React.FC<{
         modal,
         feedbackModal,
         device,
-        handleModal,
-        openFeedbackModal,
-        closeFeedbackModal,
-        copyClipboard,
+        onOpenModal,
+        onCloseModal,
+        onOpenFeedbackModal,
+        onCloseFeedbackModal,
+        onCopyClipboard,
       }}
     >
       {children}

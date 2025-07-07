@@ -1,4 +1,4 @@
-export type UserForm = {
+export type CreateUserForm = {
   access_id: number;
   username: string;
   password: string;

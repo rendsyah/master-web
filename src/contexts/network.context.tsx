@@ -7,7 +7,7 @@ import { createSafeContext } from '@/libs/utils/createSafeContext';
 
 type NetworkContextProps = Nullable<{
   isOnline: boolean;
-  isConnection: React.RefObject<boolean | null>;
+  connectionRef: React.RefObject<boolean | null>;
 }>;
 
 const [NetworkContext, useNetwork] = createSafeContext<NetworkContextProps>('Network');
@@ -15,7 +15,7 @@ const [NetworkContext, useNetwork] = createSafeContext<NetworkContextProps>('Net
 const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-  const isConnection = useRef<boolean | null>(null);
+  const connectionRef = useRef<boolean | null>(null);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -34,7 +34,7 @@ const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
     <NetworkContext.Provider
       value={{
         isOnline,
-        isConnection,
+        connectionRef,
       }}
     >
       {children}

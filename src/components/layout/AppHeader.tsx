@@ -15,19 +15,19 @@ type AppHeaderProps = {
 };
 
 const AppHeader: React.FC<AppHeaderProps> = ({ user }) => {
-  const { isMobileOpen, isExpanded, toggleSidebar, toggleMobileSidebar } = useSidebar();
+  const { isMobileOpen, isExpanded, onToggleSidebar, onToggleMobileSidebar } = useSidebar();
 
   const [isUserOpen, setIsUserOpen] = useState(false);
 
-  const toggleApplicationMenu = () => {
+  const onToggleAppMenu = () => {
     setIsUserOpen(!isUserOpen);
   };
 
-  const handleToggle = () => {
+  const onToggleMenu = () => {
     if (window.innerWidth >= 1024) {
-      toggleSidebar();
+      onToggleSidebar();
     } else {
-      toggleMobileSidebar();
+      onToggleMobileSidebar();
     }
   };
 
@@ -37,8 +37,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user }) => {
         {/* LEFT SIDE */}
         <div className="flex items-center justify-between w-full lg:justify-normal gap-2 sm:gap-4 px-5 lg:px-0 py-5 lg:py-4">
           <button
-            className="items-center justify-center lg:flex z-50"
-            onClick={handleToggle}
+            className="items-center justify-center lg:flex"
+            onClick={onToggleMenu}
             aria-label="Toggle Sidebar"
           >
             {isMobileOpen ? (
@@ -53,15 +53,10 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user }) => {
               </div>
             )}
           </button>
-
-          <button
-            onClick={toggleApplicationMenu}
-            className="flex items-center justify-center lg:hidden z-50"
-          >
+          <button onClick={onToggleAppMenu} className="flex items-center justify-center lg:hidden">
             <EllipsisHorizontalIcon className="h-6 w-6" />
           </button>
         </div>
-
         {/* RIGHT SIDE */}
         <div
           className={cn(
@@ -73,7 +68,6 @@ const AppHeader: React.FC<AppHeaderProps> = ({ user }) => {
           <button>
             <BellIcon className="w-6 h-6" />
           </button>
-
           {/* USER */}
           <AppUser user={user} />
         </div>

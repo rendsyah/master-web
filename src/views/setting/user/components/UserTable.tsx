@@ -1,26 +1,41 @@
 import type React from 'react';
+import type { UserList } from '@/types/user.types';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table/Table';
+import { useGlobal } from '@/contexts/global.context';
 import SearchIcon from '@/components/icons/Search';
 import EllipsisHorizontalIcon from '@/components/icons/EllipsisHorizontal';
 import ButtonSecondary from '@/components/ui/button/ButtonSecondary';
 import Input from '@/components/ui/form/Input';
 import Badge from '@/components/ui/badge/Badge';
 import Pagination from '@/components/ui/table/Pagination';
-import useUser from '../user.hook';
+import { usePaginatedFetch } from '@/hooks/usePaginateFetch';
+import { Routes } from '@/libs/constants/routes.const';
+import { Filter } from '@/types/commons.types';
 
-const UserTable: React.FC = () => {
+type UserTableProps = {
+  appliedFilter: Filter;
+};
+
+const UserTable: React.FC<UserTableProps> = ({ appliedFilter }) => {
+  const { onOpenModal } = useGlobal();
+
   const {
     isLoading,
     isFetching,
     data: user,
+    meta: userMeta,
     error,
+    search,
     sort,
-    meta,
-    setMeta,
     onSearch,
     onSort,
+    onMeta,
     onRetry,
-  } = useUser();
+  } = usePaginatedFetch<UserList>({
+    key: 'user',
+    endpoint: Routes.USER_LIST,
+    extraQuery: appliedFilter,
+  });
 
   const tableStatus =
     isLoading || (error && isFetching) ? (
@@ -46,13 +61,16 @@ const UserTable: React.FC = () => {
           <div className="w-full sm:min-w-[300px]">
             <Input
               className="bg-ui-800 py-3 border-none"
-              placeholder="Search users..."
+              placeholder="Search user..."
               icon={<SearchIcon className="w-5 h-5" />}
               iconPosition="left"
               onChange={onSearch}
+              value={search}
             />
           </div>
-          <ButtonSecondary className="w-full lg:w-40">Filter</ButtonSecondary>
+          <ButtonSecondary className="w-full lg:w-40" onClick={() => onOpenModal('filter')}>
+            Filter
+          </ButtonSecondary>
         </div>
       </div>
 
@@ -148,11 +166,7 @@ const UserTable: React.FC = () => {
           )}
         </TableBody>
       </Table>
-      <Pagination
-        meta={meta}
-        context="users"
-        onPageChange={(page) => setMeta((prev) => ({ ...prev, page }))}
-      />
+      <Pagination meta={userMeta} context="users" onPageChange={(page) => onMeta({ page })} />
     </div>
   );
 };

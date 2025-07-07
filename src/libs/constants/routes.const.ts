@@ -14,4 +14,6 @@ export class Routes {
   // USER
   static USER = Routes.API_USER;
   static USER_LIST = Routes.API_USER + '/list';
+  static USER_ACCESS = Routes.API_USER + '/access';
+  static USER_ACCESS_OPTIONS = Routes.USER_ACCESS + '/options';
 }

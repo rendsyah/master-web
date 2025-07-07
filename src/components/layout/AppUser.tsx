@@ -20,23 +20,23 @@ const AppUser: React.FC<AppUserProps> = ({ user }) => {
 
   const router = useRouter();
 
-  const toggleDropdown = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onToggleDropdown = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
     setIsOpen((prev) => !prev);
   };
 
-  const closeDropdown = () => {
+  const onCloseDropdown = () => {
     setIsOpen(false);
   };
 
-  const handleLogout = async () => {
+  const onLogoutHandler = async () => {
     router.replace('/api/auth/logout');
   };
 
   return (
     <div className="relative">
       {/* USER */}
-      <button onClick={toggleDropdown} className="flex items-center dropdown-toggle">
+      <button onClick={onToggleDropdown} className="flex items-center dropdown-toggle">
         <span className="mr-4 rounded-full">
           <Avatar src={user.image || ManImage} alt="Avatar" status="online" />
         </span>
@@ -45,22 +45,20 @@ const AppUser: React.FC<AppUserProps> = ({ user }) => {
           <span className="block text-xs text-gray-400">{user.access_name}</span>
         </div>
       </button>
-
       {/* DROPDOWN */}
       <Dropdown
         isOpen={isOpen}
-        onClose={closeDropdown}
+        onClose={onCloseDropdown}
         className="mt-[17px] flex flex-col w-[260px] p-3"
       >
         <div>
           <span className="block text-md">{user.fullname}</span>
           <span className="mt-0.5 block text-xs text-gray-400">{user.email}</span>
         </div>
-
         <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-secondary/[8%] text-gray-400">
           <li>
             <DropdownItem
-              onItemClick={closeDropdown}
+              onItemClick={onCloseDropdown}
               tag="a"
               href="/profile"
               className="flex items-center gap-3 group text-sm"
@@ -72,7 +70,7 @@ const AppUser: React.FC<AppUserProps> = ({ user }) => {
         </ul>
         <div
           className="flex items-center gap-3 px-3 py-2.5 mt-3 rounded-lg group text-sm text-gray-400 hover:text-primary cursor-pointer"
-          onClick={handleLogout}
+          onClick={onLogoutHandler}
         >
           <PowerIcon className="w-5 h-5" />
           Log Out

@@ -21,7 +21,7 @@ type AppAdminLayoutProps = {
 };
 
 const AppAdminLayout: React.FC<AppAdminLayoutProps> = ({ menus, user, children }) => {
-  const { isOnline, isConnection } = useNetwork();
+  const { isOnline, connectionRef } = useNetwork();
   const { isExpanded, isMobileOpen } = useSidebar();
   const { hasAllowed } = usePermission();
 
@@ -39,7 +39,7 @@ const AppAdminLayout: React.FC<AppAdminLayoutProps> = ({ menus, user, children }
   }, [hasAllowed, router]);
 
   useEffect(() => {
-    const wasOnline = isConnection.current;
+    const wasOnline = connectionRef.current;
 
     if (wasOnline !== null && wasOnline !== isOnline) {
       Notification({
@@ -51,8 +51,8 @@ const AppAdminLayout: React.FC<AppAdminLayoutProps> = ({ menus, user, children }
       });
     }
 
-    isConnection.current = isOnline;
-  }, [isOnline, isConnection]);
+    connectionRef.current = isOnline;
+  }, [isOnline, connectionRef]);
 
   return (
     <div className="min-h-screen xl:flex">

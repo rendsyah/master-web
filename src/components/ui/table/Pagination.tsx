@@ -60,38 +60,38 @@ const Pagination: React.FC<PaginationProps> = ({ meta, context, onPageChange }) 
 
   return (
     <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-4">
+      {/* RESULT */}
       <span className="text-sm">
         Showing {start} to {end} of {totalData} {context}
       </span>
-      {totalData > 0 && (
-        <div className="flex items-center gap-2">
-          <button onClick={() => onPageChange(page - 1)} disabled={page === 1}>
-            <ChevronLeftIcon className="w-4 h-4" />
-          </button>
+      {/* PAGINATION */}
+      <div className="flex items-center gap-2 h-8">
+        <button onClick={() => onPageChange(page - 1)} disabled={page === 1}>
+          <ChevronLeftIcon className="w-4 h-4" />
+        </button>
 
-          {pages.map((p, idx) =>
-            typeof p === 'number' ? (
-              <button
-                key={idx}
-                onClick={() => onPageChange(p)}
-                className={`min-w-8 min-h-8 px-2 text-sm text-white/90 text-center rounded-full ${cn(
-                  p === page ? 'bg-primary' : 'border border-secondary/[16%]',
-                )}`}
-              >
-                {p}
-              </button>
-            ) : (
-              <span key={idx} className="px-2 py-1 text-white/90 text-sm">
-                {p}
-              </span>
-            ),
-          )}
+        {pages.map((p, idx) =>
+          typeof p === 'number' ? (
+            <button
+              key={idx}
+              onClick={() => onPageChange(p)}
+              className={`min-w-8 min-h-8 px-2 text-sm text-white/90 text-center rounded-full ${cn(
+                p === page ? 'bg-primary' : 'border border-secondary/[16%]',
+              )}`}
+            >
+              {p}
+            </button>
+          ) : (
+            <span key={idx} className="px-2 py-1 text-white/90 text-sm">
+              {p}
+            </span>
+          ),
+        )}
 
-          <button onClick={() => onPageChange(page + 1)} disabled={page === totalPage}>
-            <ChevronRightIcon className="w-4 h-4" />
-          </button>
-        </div>
-      )}
+        <button onClick={() => onPageChange(page + 1)} disabled={page === totalPage}>
+          <ChevronRightIcon className="w-4 h-4" />
+        </button>
+      </div>
     </div>
   );
 };

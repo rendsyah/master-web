@@ -6,7 +6,7 @@ import CheckIcon from '@/components/icons/Check';
 import ChevronDownIcon from '@/components/icons/ChevronDown';
 
 type SelectProps = {
-  id: string;
+  id?: string;
   label?: string;
   placeholder?: string;
   options: Options[];
@@ -41,7 +41,6 @@ const Select: React.FC<SelectProps> = ({
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
       )}
-
       {/* SELECT */}
       <Listbox
         value={selected}
@@ -76,25 +75,31 @@ const Select: React.FC<SelectProps> = ({
               anchor="bottom"
               transition
               className={cn(
-                'w-(--button-width) z-40 rounded-lg border border-secondary/[16%] bg-ui-900 p-1 [--anchor-gap:--spacing(1)] focus:outline-none',
+                'w-(--button-width) rounded-lg border border-secondary/[16%] bg-ui-900 p-1 [--anchor-gap:--spacing(1)] focus:outline-none',
                 'transition duration-100 ease-in data-leave:data-closed:opacity-0',
+                'z-50',
               )}
             >
-              {options.map((opt) => (
-                <ListboxOption
-                  key={opt.name}
-                  value={opt}
-                  className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none data-focus:bg-ui-800"
-                >
-                  <CheckIcon className="invisible w-4 h-4 text-white/90 group-data-selected:visible" />
-                  <div className="text-sm">{opt.name}</div>
-                </ListboxOption>
-              ))}
+              {options.length > 0 ? (
+                options.map((opt) => (
+                  <ListboxOption
+                    key={opt.name}
+                    value={opt}
+                    className="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.75 select-none data-focus:bg-ui-800"
+                  >
+                    <CheckIcon className="invisible w-4 h-4 text-white/90 group-data-selected:visible" />
+                    <div className="text-sm">{opt.name}</div>
+                  </ListboxOption>
+                ))
+              ) : (
+                <div className="text-sm px-3 py-1.75 text-gray-400 select-none">
+                  No options available
+                </div>
+              )}
             </ListboxOptions>
           </div>
         )}
       </Listbox>
-
       {/* ERROR */}
       {error && (
         <p id={`${id}-error`} className="input-error-text mt-1.5">

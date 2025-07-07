@@ -6,7 +6,10 @@ export const createSafeContext = <T>(name: string) => {
   const useSafeContext = () => {
     const value = useContext(context);
 
-    if (value === undefined) throw new Error(`use${name} must be used within a ${name}Provider`);
+    if (value === undefined) {
+      const hook = `use${name}`;
+      throw new Error(`${hook} must be used within a ${name}Provider`);
+    }
 
     return value;
   };

@@ -21,7 +21,7 @@ const preset = {
 };
 
 const FeedbackModal: React.FC = () => {
-  const { feedbackModal, closeFeedbackModal, copyClipboard } = useGlobal();
+  const { feedbackModal, onCloseFeedbackModal, onCopyClipboard } = useGlobal();
 
   useLockBody(!!feedbackModal.open);
 
@@ -30,9 +30,9 @@ const FeedbackModal: React.FC = () => {
   const config = preset[feedbackModal.type] || preset.success;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-40">
+    <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* BACKDROP */}
-      <div className="fixed inset-0 bg-ui-900/50 backdrop-blur-sm" onClick={closeFeedbackModal} />
+      <div className="fixed inset-0 bg-ui-900/50 backdrop-blur-sm" onClick={onCloseFeedbackModal} />
       {/* MODAL */}
       <div
         role="dialog"
@@ -51,7 +51,7 @@ const FeedbackModal: React.FC = () => {
               <div className="flex item-center justify-center gap-2">
                 <span
                   className="flex items-center gap-2 text-xs font-semibold cursor-pointer"
-                  onClick={() => copyClipboard(feedbackModal.traceId as string)}
+                  onClick={() => onCopyClipboard(feedbackModal.traceId as string)}
                 >
                   <Square2StackIcon className="h-6 w-6" />
                   Report ID
@@ -59,10 +59,10 @@ const FeedbackModal: React.FC = () => {
               </div>
             )}
           </div>
-          <Button onClick={closeFeedbackModal}>Close</Button>
+          <Button onClick={onCloseFeedbackModal}>Close</Button>
         </div>
         {/* CLOSE */}
-        <button onClick={closeFeedbackModal} className="absolute top-3 right-3">
+        <button onClick={onCloseFeedbackModal} className="absolute top-3 right-3">
           <XMarkIcon className="h-6 w-6" />
         </button>
       </div>

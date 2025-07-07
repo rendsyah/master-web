@@ -9,10 +9,10 @@ import GoogleIcon from '@/components/icons/Google';
 import GithubIcon from '@/components/icons/Github';
 import ButtonPrimary from '@/components/ui/button/ButtonPrimary';
 import ButtonSecondary from '@/components/ui/button/ButtonSecondary';
-import useLogin from './login.hook';
+import useLogin from './hooks/useLogin.hook';
 
 const LoginView: React.FC = () => {
-  const { form, showPassword, handleShow, onSubmit } = useLogin();
+  const { form, showPassword, onShow, onSubmit } = useLogin();
 
   const {
     register,
@@ -61,7 +61,7 @@ const LoginView: React.FC = () => {
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Enter your password"
                 icon={
-                  <div className="cursor-pointer" onClick={handleShow}>
+                  <div className="cursor-pointer" onClick={onShow}>
                     {showPassword ? (
                       <EyeIcon className="h-5 w-5" />
                     ) : (

@@ -13,7 +13,7 @@ type MenuButtonProps = {
   menu: Menu;
   activeLinkClass: string;
   hasMatchedChild: boolean;
-  toggleChild: () => void;
+  onToggleChild: () => void;
 };
 
 type MenuLinkProps = {
@@ -35,11 +35,11 @@ const MenuButton: React.FC<MenuButtonProps> = ({
   menu,
   activeLinkClass,
   hasMatchedChild,
-  toggleChild,
+  onToggleChild,
 }) => (
   <button
     type="button"
-    onClick={toggleChild}
+    onClick={onToggleChild}
     className={cn(
       'rounded-lg hover:text-primary w-full',
       activeLinkClass,
@@ -94,9 +94,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ menu, index, openChildIndex, setOpe
   const isActive = useCallback((path: string) => pathname === path, [pathname]);
   const isActiveChild = menu.child.some((child) => isActive(child.path)) ?? false;
 
-  const toggleChild = () => {
-    setOpenChildIndex(hasMatchedChild ? null : index);
-  };
+  const onToggleChild = () => setOpenChildIndex(hasMatchedChild ? null : index);
 
   const activeLinkClass = isActive(menu.path) || isActiveChild ? 'text-primary' : 'text-gray-400';
   const activeDotClass = isActive(menu.path) ? 'bg-white/90' : 'bg-gray-400';
@@ -111,7 +109,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ menu, index, openChildIndex, setOpe
             menu={menu}
             activeLinkClass={activeLinkClass}
             hasMatchedChild={hasMatchedChild}
-            toggleChild={toggleChild}
+            onToggleChild={onToggleChild}
           />
         ) : (
           <MenuLink
@@ -122,7 +120,6 @@ const MenuItem: React.FC<MenuItemProps> = ({ menu, index, openChildIndex, setOpe
           />
         )}
       </div>
-
       {/* CHILDREN */}
       {hasChild && (
         <div

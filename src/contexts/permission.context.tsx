@@ -1,6 +1,7 @@
 'use client';
 
 import type React from 'react';
+import { useCallback, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { createSafeContext } from '@/libs/utils/createSafeContext';
 
@@ -25,17 +26,17 @@ const usePermission = () => {
   const permissions = usePermissionCtx();
   const pathname = usePathname();
 
-  const allPermissions = permissions;
-  const currentPermission = permissions[pathname];
+  const currentPermission = useMemo(() => permissions[pathname], [permissions, pathname]);
 
-  const hasPermission = (action: keyof PermissionProps[string]) => {
-    return currentPermission?.[action] ?? false;
-  };
+  const hasPermission = useCallback(
+    (action: keyof PermissionProps[string]) => currentPermission?.[action] ?? false,
+    [currentPermission],
+  );
 
-  const hasAllowed = !!currentPermission;
+  const hasAllowed = useMemo(() => !!currentPermission, [currentPermission]);
 
   return {
-    allPermissions,
+    allPermissions: permissions,
     currentPermission,
     hasAllowed,
     hasPermission,
