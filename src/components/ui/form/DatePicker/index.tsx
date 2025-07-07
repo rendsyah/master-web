@@ -72,7 +72,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
             anchor="bottom start"
             transition
             className={cn(
-              'w-fit rounded-lg border border-secondary/[16%] bg-ui-900 [--anchor-gap:--spacing(1)]',
+              'w-(--button-width) sm:w-fit sm:min-w-[240px] sm:max-w-[260px] rounded-lg border border-secondary/[16%] bg-ui-900 [--anchor-gap:--spacing(1)]',
               'transition duration-100 ease-in data-leave:data-closed:opacity-0',
               'z-50',
             )}
